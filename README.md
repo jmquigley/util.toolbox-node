@@ -2,7 +2,7 @@
 
 > A set of utility functions used for build and testing across node projects.
 
-[![build](https://travis-ci.org/jmquigley/util.toolbox-node.svg?branch=master)](https://travis-ci.org/jmquigley/util.toolbox-node)
+[![build](https://circleci.com/gh/jmquigley/util.toolbox-node/tree/master.svg?style=shield)](https://circleci.com/gh/jmquigley/util.toolbox-node/tree/master)
 [![analysis](https://img.shields.io/badge/analysis-tslint-9cf.svg)](https://palantir.github.io/tslint/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![testing](https://img.shields.io/badge/testing-jest-blue.svg)](https://facebook.github.io/jest/)
