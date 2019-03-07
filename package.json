@@ -1,6 +1,6 @@
 {
 	"name": "util.toolbox-node",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": "jmquigley <jmquigley@outlook.com>",
 	"description": "A set of functions used for build and testing across node projects",
 	"private": false,
