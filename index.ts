@@ -1,15 +1,21 @@
 import * as ps from "child_process";
 import * as fs from "fs-extra";
 import * as path from "path";
-import {failure, isWin, nil, sanitize, success} from "util.toolbox";
+import {encoding as defaultEncoding, failure, success} from "util.constants";
+import {nil, sanitize} from "util.toolbox";
 
 export interface CallOpts {
 	async?: boolean;
 	log?: any;
 	shell?: string;
 	shellArgs?: string[];
+	cmd?: string;
 	verbose?: boolean;
 }
+
+const reLinux = new RegExp("^linux");
+const reMac = new RegExp("^darwin");
+const reWin = new RegExp("^win");
 
 /**
  * Performs an asynchronous command line call to run a given user command.
@@ -59,10 +65,11 @@ export function call(
 	opts = Object.assign(
 		{
 			async: true,
+			cmd,
 			log: console.log,
 			verbose: true,
-			shell: isWin ? "powershell" : "/bin/bash",
-			shellArgs: isWin ? ["", cmd] : ["-l", "-c", cmd]
+			shell: isWin() ? "powershell" : "/bin/bash",
+			shellArgs: isWin() ? ["", cmd] : ["-l", "-c", cmd]
 		},
 		opts
 	);
@@ -75,7 +82,7 @@ export function call(
 		const out = ps.execFile(opts.shell, opts.shellArgs);
 
 		out.stdout.on("data", (data: string | Buffer) => {
-			sanitize(data, opts.verbose);
+			sanitize(data, opts.verbose, opts.log);
 			return out;
 		});
 
@@ -95,11 +102,17 @@ export function call(
 		});
 	} else {
 		try {
-			const data = ps.execFileSync(opts.shell, opts.shellArgs);
-			sanitize(data, opts.verbose);
-			return cb(null, success);
+			const out = ps.execFileSync(opts.shell, opts.shellArgs, {
+				encoding: defaultEncoding
+			});
+
+			if (opts.verbose) {
+				opts.log(out);
+			}
+
+			cb(null, success);
 		} catch (err) {
-			return cb(err, failure);
+			cb(err, failure);
 		}
 	}
 }
@@ -121,18 +134,11 @@ export function callSync(
 ): number {
 	let rc: number = success;
 
-	opts = Object.assign(
-		{
-			async: false,
-			log: console.log
-		},
-		opts
-	);
-
-	call(cmd, opts, (err, code) => {
+	call(cmd, {...opts, async: false}, (err: any, code: number) => {
 		if (err) {
 			opts.log(err.message);
 		}
+
 		rc = code;
 	});
 
@@ -150,4 +156,28 @@ export function getDirectories(src: string): string[] {
 		.filter((file: string) =>
 			fs.statSync(path.join(src, file)).isDirectory()
 		);
+}
+
+/**
+ * Checks if the environment is Linux
+ * @returns {boolean} true if the opsys is Linux, otherwise false
+ */
+export function isLinux(): boolean {
+	return reLinux.test(process.platform);
+}
+
+/**
+ * Checks if the environment is OSX
+ * @returns {boolean} true if the opsys is OSX, otherwise false
+ */
+export function isMac(): boolean {
+	return reMac.test(process.platform);
+}
+
+/**
+ * Checks if the environment is windows
+ * @returns {boolean} true if the opsys is windows, otherwise false
+ */
+export function isWin(): boolean {
+	return reWin.test(process.platform);
 }

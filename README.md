@@ -31,5 +31,9 @@ The toolbox contains the following functions:
 - [call](docs/index.md#call)
 - [callSync](docs/index.md#callSync)
 - [getDirectories](docs/index.md#getDirectories)
+- [isLinux](docs/index.md#isLinux) - returns true if the operating system is Linux, otherwise false.
+- [isMac](docs/index.md#isMac) - returns true if the operating system is OSX, otherwise false.
+- [isWin](docs/index.md#isWin) - returns true if the operating system is windows, otherwise false.
+
 
 These functions cannot be used within a web module (unless it's within electron).  These require [Node](https://nodejs.org/en/) to function correctly and that will not be available in a browser.

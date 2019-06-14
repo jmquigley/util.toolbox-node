@@ -2,32 +2,45 @@
 
 console.log = jest.fn();
 
-const debug = require("debug")("util.toolbox.test");
+const debug = require("debug")("util.toolbox-node:test");
 
 import * as path from "path";
-import uuid from "uuid";
-import {regexUUID} from "util.constants";
+import {failure, regexUUID, success} from "util.constants";
 import {
 	closestNumber,
-	failure,
 	getRandomInt,
 	getRandomIntInclusive,
 	getUUID,
-	isDarwin,
-	isLinux,
-	isWin,
 	nil,
 	nilEvent,
-	sanitize,
-	success
+	sanitize
 } from "util.toolbox";
-import {call, callSync, getDirectories} from "../index";
+import uuid from "uuid";
+import {call, callSync, getDirectories, isLinux, isMac, isWin} from "../index";
 
 test("Test of the call async function", (done) => {
 	let cmd = "";
-	if (isWin) {
+	if (isWin()) {
 		cmd = "Get-ChildItem Env:";
-	} else if (isDarwin || isLinux) {
+	} else if (isMac() || isLinux()) {
+		cmd = "env";
+	}
+
+	call(cmd, {log: debug}, (err: Error, code: number) => {
+		if (err) {
+			throw new Error(err.message);
+		}
+
+		expect(code).toBe(0);
+		done();
+	});
+});
+
+test("Test of the call async function without options", (done) => {
+	let cmd = "";
+	if (isWin()) {
+		cmd = "Get-ChildItem Env:";
+	} else if (isMac() || isLinux()) {
 		cmd = "env";
 	}
 
@@ -42,7 +55,7 @@ test("Test of the call async function", (done) => {
 });
 
 test("Test of the call async function with bad command", (done) => {
-	call(uuid.v4(), (err: Error, code: number) => {
+	call(uuid.v4(), {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			expect(`${err.message} (${code})`).toBeTruthy();
 			expect(code).not.toBe(0);
@@ -55,13 +68,13 @@ test("Test of the call async function with bad command", (done) => {
 
 test("Test of the call async function with long output", (done) => {
 	let cmd = "";
-	if (isWin) {
+	if (isWin()) {
 		cmd = "dir";
-	} else if (isDarwin || isLinux) {
+	} else if (isMac() || isLinux()) {
 		cmd = "ls -axpl";
 	}
 
-	call(cmd, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -73,13 +86,13 @@ test("Test of the call async function with long output", (done) => {
 
 test("Test of the call async function with Buffer", (done) => {
 	let cmd: Buffer = null;
-	if (isWin) {
+	if (isWin()) {
 		cmd = new Buffer.from("dir");
-	} else if (isDarwin || isLinux) {
+	} else if (isMac() || isLinux()) {
 		cmd = new Buffer.from("ls -axpl");
 	}
 
-	call(cmd, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -91,13 +104,13 @@ test("Test of the call async function with Buffer", (done) => {
 
 test("Test of the call async function with Array of command parts", (done) => {
 	let cmd: string[] = [];
-	if (isWin) {
+	if (isWin()) {
 		cmd = ["dir", "-Directory"];
-	} else if (isDarwin || isLinux) {
+	} else if (isMac() || isLinux()) {
 		cmd = ["ls", "-axpl"];
 	}
 
-	call(cmd, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -108,7 +121,7 @@ test("Test of the call async function with Array of command parts", (done) => {
 });
 
 test("Test of the call async function with null command", (done) => {
-	call(null, (err: Error, code: number) => {
+	call(null, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			expect(code).toBe(127);
 			expect(err.message).toBe("No command given to execute in call");
@@ -121,18 +134,18 @@ test("Test of the call async function with null command", (done) => {
 
 test("Test of synchronous call function", () => {
 	let cmd = "";
-	if (isWin) {
+	if (isWin()) {
 		cmd = 'echo "powershell call"';
-	} else if (isDarwin || isLinux) {
+	} else if (isMac() || isLinux()) {
 		cmd = "sleep 2";
 	}
 
-	const rc = callSync(cmd);
+	const rc = callSync(cmd, {log: debug});
 	expect(rc).toBe(success);
 });
 
 test("Test of synchronous call function with a bad command", () => {
-	const rc = callSync(uuid.v4());
+	const rc = callSync(uuid.v4(), {log: debug});
 	expect(rc).toBe(failure);
 });
 

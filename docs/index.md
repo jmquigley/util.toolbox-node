@@ -17,6 +17,15 @@ finish.  When the call is finished a callback is executed.</p>
 <dt><a href="#getDirectories">getDirectories(src)</a> ⇒ <code>Array</code></dt>
 <dd><p>Retrieves a list of directories from the given input path.</p>
 </dd>
+<dt><a href="#isLinux">isLinux()</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if the environment is Linux</p>
+</dd>
+<dt><a href="#isMac">isMac()</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if the environment is OSX</p>
+</dd>
+<dt><a href="#isWin">isWin()</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if the environment is windows</p>
+</dd>
 </dl>
 
 <a name="call"></a>
@@ -34,7 +43,7 @@ When using default BASH options it will invoke as a login shell.
 **Params**
 
 - cmd <code>string</code> - the command to execute on the command line
-- [opts] <code>CallOpts</code> <code> = </code> - optional arguments to the call
+- [opts] <code>CallOpts</code> - optional arguments to the call
 
     - `async: boolean`: if true, then the async version is called, otherwise
     the call will be synchronous.
@@ -60,7 +69,7 @@ finish.  When the call is finished a callback is executed.
 **Params**
 
 - cmd <code>string</code> - the command to execute on the command line
-- [opts] <code>CallOpts</code> <code> = </code> - optional arguments to the call
+- [opts] <code>CallOpts</code> - optional arguments to the call
 - [cb] <code>function</code> - the callback function to execute when the command
 finishes.
 
@@ -75,3 +84,24 @@ Retrieves a list of directories from the given input path.
 
 - src <code>string</code> - the source directory to search for sub directories
 
+<a name="isLinux"></a>
+
+## isLinux() ⇒ <code>boolean</code>
+Checks if the environment is Linux
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the opsys is Linux, otherwise false  
+<a name="isMac"></a>
+
+## isMac() ⇒ <code>boolean</code>
+Checks if the environment is OSX
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the opsys is OSX, otherwise false  
+<a name="isWin"></a>
+
+## isWin() ⇒ <code>boolean</code>
+Checks if the environment is windows
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the opsys is windows, otherwise false  
