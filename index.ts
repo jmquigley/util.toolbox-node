@@ -134,6 +134,14 @@ export function callSync(
 ): number {
 	let rc: number = success;
 
+	opts = Object.assign(
+		{
+			async: false,
+			log: console.log
+		},
+		opts
+	);
+
 	call(cmd, {...opts, async: false}, (err: any, code: number) => {
 		if (err) {
 			opts.log(err.message);
