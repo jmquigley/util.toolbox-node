@@ -1,81 +1,82 @@
 {
-  "name": "util.toolbox-node",
-  "version": "0.0.7",
-  "author": "jmquigley <jmquigley@outlook.com>",
-  "description": "A set of functions used for build and testing across node projects",
-  "debug": false,
-  "private": false,
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jmquigley/util.toolbox-node"
-  },
-  "bugs": {
-    "url": "https://github.com/jmquigley/util.toolbox-node/issues"
-  },
-  "engines": {
-    "node": ">=7.x"
-  },
-  "main": "./index.umd.min.js",
-  "module": "./index.es.min.js",
-  "types": "./index.d.ts",
-  "files": [
-    "index.*.min.js",
-    "index.d.ts"
-  ],
-  "dependencies": {
-    "fs-extra": "^8.1.0",
-    "util.constants": "^0.0.29",
-    "util.toolbox": "^0.0.85"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-decorators": "^7.7.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.7.5",
-    "@babel/plugin-transform-modules-umd": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-typescript": "^7.7.4",
-    "@babel/runtime": "^7.7.6",
-    "@types/fs-extra": "8.0.1",
-    "@types/jest": "^24.0.23",
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^12.12.17",
-    "@types/uuid": "^3.4.6",
-    "@types/yargs": "^13.0.3",
-    "babel-loader": "^8.0.6",
-    "babel-minify": "^0.5.1",
-    "babel-preset-minify": "^0.5.1",
-    "coveralls": "^3.0.9",
-    "jest": "^24.9.0",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.3",
-    "util.pkgwrap": "^0.0.115",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
-  },
-  "pkgwrap": {
-    "cleanup": [
-      "docs",
-      "tsconfig.tsbuildinfo"
-    ]
-  },
-  "scripts": {
-    "all": "yarn install && cross-env NODE_ENV=production yarn build && yarn docs && yarn test && yarn manifest",
-    "build": "yarn lint && yarn prettier && yarn build:umd && yarn build:es && yarn build:cjs",
-    "build:cjs": "babel index.ts --source-type module --out-file index.cjs.min.js",
-    "build:es": "minify index.js --sourceType module --out-file index.es.min.js",
-    "build:umd": "pkgwrap --build --webpack",
-    "clean": "pkgwrap --clean",
-    "clean:dist": "yarn clean && rimraf node_modules/ yarn.lock",
-    "coverage": "pkgwrap --coverage --jest",
-    "docs": "pkgwrap --docs",
-    "lint": "pkgwrap --lint",
-    "manifest": "npm pack --dry-run",
-    "prettier": "pkgwrap --prettier",
-    "test": "jest"
-  }
+	"name": "util.toolbox-node",
+	"version": "0.0.8",
+	"author": "jmquigley <jmquigley@outlook.com>",
+	"description": "A set of functions used for build and testing across node projects",
+	"debug": false,
+	"private": false,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jmquigley/util.toolbox-node"
+	},
+	"bugs": {
+		"url": "https://github.com/jmquigley/util.toolbox-node/issues"
+	},
+	"engines": {
+		"node": ">=7.x"
+	},
+	"prettier": "@jmquigley/prettier-config",
+	"main": "./index.umd.min.js",
+	"module": "./index.es.min.js",
+	"types": "./index.d.ts",
+	"files": [
+		"index.*.min.js",
+		"index.d.ts"
+	],
+	"dependencies": {
+		"fs-extra": "^8.1.0",
+		"util.constants": "^0.0.30",
+		"util.toolbox": "^0.0.86"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.7.5",
+		"@babel/core": "^7.7.5",
+		"@babel/plugin-proposal-class-properties": "^7.7.4",
+		"@babel/plugin-proposal-decorators": "^7.7.4",
+		"@babel/plugin-transform-modules-commonjs": "^7.7.5",
+		"@babel/plugin-transform-modules-umd": "^7.7.4",
+		"@babel/plugin-transform-runtime": "^7.7.6",
+		"@babel/preset-env": "^7.7.6",
+		"@babel/preset-typescript": "^7.7.4",
+		"@babel/runtime": "^7.7.6",
+		"@types/fs-extra": "8.0.1",
+		"@types/jest": "^24.0.23",
+		"@types/lodash": "^4.14.149",
+		"@types/node": "^12.12.17",
+		"@types/uuid": "^3.4.6",
+		"@types/yargs": "^13.0.3",
+		"babel-loader": "^8.0.6",
+		"babel-minify": "^0.5.1",
+		"babel-preset-minify": "^0.5.1",
+		"coveralls": "^3.0.9",
+		"jest": "^24.9.0",
+		"tslint": "^5.20.1",
+		"tslint-config-prettier": "^1.18.0",
+		"typescript": "^3.7.3",
+		"util.pkgwrap": "^0.0.115",
+		"webpack": "^4.41.2",
+		"webpack-cli": "^3.3.10"
+	},
+	"pkgwrap": {
+		"cleanup": [
+			"docs",
+			"tsconfig.tsbuildinfo"
+		]
+	},
+	"scripts": {
+		"all": "yarn install && cross-env NODE_ENV=production yarn build && yarn docs && yarn test && yarn manifest",
+		"build": "yarn lint && yarn prettier && yarn build:umd && yarn build:es && yarn build:cjs",
+		"build:cjs": "babel index.ts --source-type module --out-file index.cjs.min.js",
+		"build:es": "minify index.js --sourceType module --out-file index.es.min.js",
+		"build:umd": "pkgwrap --build --webpack",
+		"clean": "pkgwrap --clean",
+		"clean:dist": "yarn clean && rimraf node_modules/ yarn.lock",
+		"coverage": "pkgwrap --coverage --jest",
+		"docs": "pkgwrap --docs",
+		"lint": "pkgwrap --lint",
+		"manifest": "npm pack --dry-run",
+		"prettier": "pkgwrap --prettier",
+		"test": "jest"
+	}
 }

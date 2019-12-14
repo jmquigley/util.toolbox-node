@@ -5,7 +5,7 @@ console.log = jest.fn();
 const debug = require("debug")("util.toolbox-node:test");
 
 import * as path from "path";
-import { failure, regexUUID, success } from "util.constants";
+import {failure, regexUUID, success} from "util.constants";
 import {
 	closestNumber,
 	getRandomInt,
@@ -16,16 +16,9 @@ import {
 	sanitize
 } from "util.toolbox";
 import uuid from "uuid";
-import {
-	call,
-	callSync,
-	getDirectories,
-	isLinux,
-	isMac,
-	isWin
-} from "../index";
+import {call, callSync, getDirectories, isLinux, isMac, isWin} from "../index";
 
-test("Test of the call async function", done => {
+test("Test of the call async function", (done) => {
 	let cmd = "";
 	if (isWin()) {
 		cmd = "Get-ChildItem Env:";
@@ -33,7 +26,7 @@ test("Test of the call async function", done => {
 		cmd = "env";
 	}
 
-	call(cmd, { log: debug }, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -43,7 +36,7 @@ test("Test of the call async function", done => {
 	});
 });
 
-test("Test of the call async function without options", done => {
+test("Test of the call async function without options", (done) => {
 	let cmd = "";
 	if (isWin()) {
 		cmd = "Get-ChildItem Env:";
@@ -61,8 +54,8 @@ test("Test of the call async function without options", done => {
 	});
 });
 
-test("Test of the call async function with bad command", done => {
-	call(uuid.v4(), { log: debug }, (err: Error, code: number) => {
+test("Test of the call async function with bad command", (done) => {
+	call(uuid.v4(), {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			expect(`${err.message} (${code})`).toBeTruthy();
 			expect(code).not.toBe(0);
@@ -73,7 +66,7 @@ test("Test of the call async function with bad command", done => {
 	});
 });
 
-test("Test of the call async function with long output", done => {
+test("Test of the call async function with long output", (done) => {
 	let cmd = "";
 	if (isWin()) {
 		cmd = "dir";
@@ -81,7 +74,7 @@ test("Test of the call async function with long output", done => {
 		cmd = "ls -axpl";
 	}
 
-	call(cmd, { log: debug }, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -91,7 +84,7 @@ test("Test of the call async function with long output", done => {
 	});
 });
 
-test("Test of the call async function with Buffer", done => {
+test("Test of the call async function with Buffer", (done) => {
 	let cmd: Buffer = null;
 	if (isWin()) {
 		cmd = new Buffer.from("dir");
@@ -99,7 +92,7 @@ test("Test of the call async function with Buffer", done => {
 		cmd = new Buffer.from("ls -axpl");
 	}
 
-	call(cmd, { log: debug }, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -109,7 +102,7 @@ test("Test of the call async function with Buffer", done => {
 	});
 });
 
-test("Test of the call async function with Array of command parts", done => {
+test("Test of the call async function with Array of command parts", (done) => {
 	let cmd: string[] = [];
 	if (isWin()) {
 		cmd = ["dir", "-Directory"];
@@ -117,7 +110,7 @@ test("Test of the call async function with Array of command parts", done => {
 		cmd = ["ls", "-axpl"];
 	}
 
-	call(cmd, { log: debug }, (err: Error, code: number) => {
+	call(cmd, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			throw new Error(err.message);
 		}
@@ -127,8 +120,8 @@ test("Test of the call async function with Array of command parts", done => {
 	});
 });
 
-test("Test of the call async function with null command", done => {
-	call(null, { log: debug }, (err: Error, code: number) => {
+test("Test of the call async function with null command", (done) => {
+	call(null, {log: debug}, (err: Error, code: number) => {
 		if (err) {
 			expect(code).toBe(127);
 			expect(err.message).toBe("No command given to execute in call");
@@ -147,12 +140,12 @@ test("Test of synchronous call function", () => {
 		cmd = "sleep 2";
 	}
 
-	const rc = callSync(cmd, { log: debug });
+	const rc = callSync(cmd, {log: debug});
 	expect(rc).toBe(success);
 });
 
 test("Test of synchronous call function with a bad command", () => {
-	const rc = callSync(uuid.v4(), { log: debug });
+	const rc = callSync(uuid.v4(), {log: debug});
 	expect(rc).toBe(failure);
 });
 

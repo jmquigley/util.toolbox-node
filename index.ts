@@ -1,8 +1,8 @@
 import * as ps from "child_process";
 import * as fs from "fs-extra";
 import * as path from "path";
-import { encoding as defaultEncoding, failure, success } from "util.constants";
-import { nil, sanitize } from "util.toolbox";
+import {encoding as defaultEncoding, failure, success} from "util.constants";
+import {nil, sanitize} from "util.toolbox";
 
 export interface CallOpts {
 	async?: boolean;
@@ -142,7 +142,7 @@ export function callSync(
 		opts
 	);
 
-	call(cmd, { ...opts, async: false }, (err: any, code: number) => {
+	call(cmd, {...opts, async: false}, (err: any, code: number) => {
 		if (err) {
 			opts.log(err.message);
 		}
